@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct(UrlGenerator $url)
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         $this->prev = $url->previous();
     }
 
@@ -31,6 +31,14 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(){
+        $user=auth()->user();
+        $campamentista=null;
+        if($user->campamenti_id!=null){
+            $campamentista=\App\Models\Campament::find($user->campamenti_id);
+        }
+        // if($campamentista){
+        //     return redirect('male');
+        // }
         return view('home');
     }
 
@@ -58,6 +66,7 @@ class HomeController extends Controller
         }
         // return view('qr',['products' =>$products]);
     }
+
     public function generateQrs() {
         $qrCodesPerPage = 4;
 
@@ -93,7 +102,6 @@ class HomeController extends Controller
 
     }
 
-
     public function incorrect(){
         return view('incorrect');
     }
@@ -102,6 +110,9 @@ class HomeController extends Controller
         return view('correct');
     }
 
+    public function excel() {
+        return view('excel');
+    }
     public function search($code){
         if($code===null){
             return redirect($this->prev)->with('message_error','No se encontró el code');
@@ -144,6 +155,102 @@ class HomeController extends Controller
                 return redirect('incorrect')->with('message_error','No autorizado');
             }
             return redirect('incorrect')->with('message_error','No autorizado');
+        }
+    }
+
+    public function viewMale(){
+        $user=auth()->user();
+        $campamentista=null;
+        if($user->campamenti_id!=null){
+            $campamentista=\App\Models\Campament::find($user->campamenti_id);
+        }
+        if($campamentista){
+            if($campamentista->capacity==2){
+                return redirect($this->prev)->with('message_error','No autorizado');
+            }
+            if($campamentista->capacity==1){
+                return redirect('/female');
+            }
+            $campa=\App\Models\Campament::where('gender','male')->where('status','pending')->get();
+            $texto='Varon';
+            \Log::info($campa);
+            return view('male',['campa'=>$campa,'texto'=>$texto]);
+        }
+    }
+
+
+    public function viewFemale(){
+        $user=auth()->user();
+        $campamentista=null;
+        if($user->campamenti_id!=null){
+            $campamentista=\App\Models\Campament::find($user->campamenti_id);
+        }
+        if($campamentista){
+            if($campamentista->capacity==2){
+                return redirect('/free')->with('message_error','No autorizado');
+            }
+            if($campamentista->capacity==0){
+                return redirect('/male');
+            }
+            $campa=\App\Models\Campament::where('gender','female')->where('status','pending')->get();
+            $texto='Mujer';
+            return view('male',['campa'=>$campa,'texto'=>$texto]);
+        }
+    }
+
+
+    public function free(){
+        return view('free');
+    }
+
+    public function cambiar(){
+        $campamentistas=\App\Models\Campament::where('image','like','.JPG')->get();
+        foreach ($$campamentistas as $key => $item) {
+            $img=$item->image;
+            $a=explode('.',$img);
+            $item->image=$a[0].'jpg';
+            $item->save();
+        }
+    }
+
+
+    public function vieFriendwMale(){
+        $user=auth()->user();
+        $campamentista=null;
+        if($user->campamenti_id!=null){
+            $campamentista=\App\Models\Campament::find($user->campamenti_id);
+        }
+        if($campamentista){
+            if($campamentista->capacity==2){
+                return redirect($this->prev)->with('message_error','No autorizado');
+            }
+            if($campamentista->capacity==1){
+                return redirect('/female');
+            }
+            $campa=\App\Models\Campament::where('gender','male')->where('status','pending')->get();
+            $texto='Amigo';
+            \Log::info($campa);
+            return view('friend',['campa'=>$campa,'texto'=>$texto]);
+        }
+    }
+
+    public function vieFriendFemale(){
+        $user=auth()->user();
+        $campamentista=null;
+        if($user->campamenti_id!=null){
+            $campamentista=\App\Models\Campament::find($user->campamenti_id);
+        }
+        if($campamentista){
+            if($campamentista->capacity==2){
+                return redirect($this->prev)->with('message_error','No autorizado');
+            }
+            if($campamentista->capacity==1){
+                return redirect('/female');
+            }
+            $campa=\App\Models\Campament::where('gender','male')->where('status','pending')->get();
+            $texto='Amigo';
+            \Log::info($campa);
+            return view('friend',['campa'=>$campa,'texto'=>$texto]);
         }
     }
 }

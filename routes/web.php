@@ -19,9 +19,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/result', [App\Http\Controllers\HomeController::class, 'result'])->name('result');
+Route::prefix('/process')->group(function () {
+    Route::post('/excel', [App\Http\Controllers\ProcessController::class, 'uploadExcel'])->name('home');
+    Route::get('/vote/{campa_id}', [App\Http\Controllers\ProcessController::class, 'vote'])->name('vote');
+});
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/male', [App\Http\Controllers\HomeController::class, 'viewMale'])->name('male');
+Route::get('/female', [App\Http\Controllers\HomeController::class, 'viewFemale'])->name('female');
+Route::get('/free', [App\Http\Controllers\HomeController::class, 'free'])->name('free');
+Route::get('/result', [App\Http\Controllers\HomeController::class, 'result'])->name('result');
+Route::get('/excel', [App\Http\Controllers\HomeController::class, 'excel'])->name('excel');
 Route::get('/pdf', [App\Http\Controllers\HomeController::class, 'generateQrs'])->name('pdf');
 Route::get('/incorrect', [App\Http\Controllers\HomeController::class, 'incorrect'])->name('incorrect');
 Route::get('/correct', [App\Http\Controllers\HomeController::class, 'correct'])->name('correct');

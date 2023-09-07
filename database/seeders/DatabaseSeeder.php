@@ -31,32 +31,35 @@ class DatabaseSeeder extends Seeder
         //     ['name' => 'Product 05','code'=>'7S5D6', 'image'=>'', 'group_id'=>2],
         // ];
         // \App\Models\Product::insert($products);
-        $j=1;$y=1;
-        $products=[];
-        for ($i=1; $i <=28 ; $i++) {
-            if($j>7){
-                $j=1;
-                $y+=1;
-            }
-            $a=['name' => 'Product '.$i,'code'=>Func::generateCode(6), 'image'=>'', 'group_id'=>$y];
-            $j++;
-            $products[]=$a;
-        }
-        \Log::info($products);
-        \App\Models\Product::insert($products);
-        $coins=[
-            ['name'=>'bronce','pts'=>10],
-            ['name'=>'plata','pts'=>20],
-            ['name'=>'oro','pts'=>30],
-            ['name'=>'diamante','pts'=>50],
+        // $j=1;$y=1;
+        // $products=[];
+        // for ($i=1; $i <=28 ; $i++) {
+        //     if($j>7){
+        //         $j=1;
+        //         $y+=1;
+        //     }
+        //     $a=['name' => 'Product '.$i,'code'=>Func::generateCode(6), 'image'=>'', 'group_id'=>$y];
+        //     $j++;
+        //     $products[]=$a;
+        // }
+        // \Log::info($products);
+        // \App\Models\Product::insert($products);
+        // $coins=[
+        //     ['name'=>'bronce','pts'=>10],
+        //     ['name'=>'plata','pts'=>20],
+        //     ['name'=>'oro','pts'=>30],
+        //     ['name'=>'diamante','pts'=>50],
+        // ];
+        // \App\Models\Coin::insert($coins);
+        $minist=[
+            ['name' => 'JUDEA'],
+            ['name' => 'VALIENTES'],
+            ['name' => 'LOKHEM'],
         ];
-        \App\Models\Coin::insert($coins);
+        \App\Models\Ministry::insert($minist);
+        
         $users=[
             ['name'=>'admin','email'=>'admin@gmail.com','password'=>Hash::make(12345678),'group_id'=>null],
-            ['name'=>'user 01','email'=>'user01@gmail.com','password'=>Hash::make(12345678),'group_id'=>1],
-            ['name'=>'user 02','email'=>'user02@gmail.com','password'=>Hash::make(12345678),'group_id'=>2],
-            ['name'=>'user 03','email'=>'user03@gmail.com','password'=>Hash::make(12345678),'group_id'=>3],
-            ['name'=>'user 03','email'=>'user04@gmail.com','password'=>Hash::make(12345678),'group_id'=>4],
         ];
         \App\Models\User::insert($users);
     }

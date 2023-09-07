@@ -53,6 +53,33 @@ class General extends Migration
             $table->integer('group_id')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('ministrys', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('campamentis', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            $table->integer('age')->nullable();
+            $table->integer('phone')->nullable();
+            $table->enum('gender',['male','female'])->nullable();
+            $table->string('image')->nullable();
+            $table->enum('status',['pending','active','process','closed'])->nullable()->default('pending')->nullable();
+            $table->integer('ministry_id')->nullable();
+            $table->integer('group_id')->nullable();
+            $table->integer('capacity')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('votes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('campamenti_id')->nullable();
+            $table->integer('vote')->default(1);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -68,6 +95,10 @@ class General extends Migration
         Schema::dropIfExists('views');
         Schema::dropIfExists('coins');
         Schema::dropIfExists('points');
+        Schema::dropIfExists('groups');
 
+        Schema::dropIfExists('ministrys');
+        Schema::dropIfExists('campamentis');
+        Schema::dropIfExists('votes');
     }
 }

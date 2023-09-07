@@ -14,7 +14,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "*",
         "simplesoftwareio/simple-qrcode": "^4.2",
-        "tecnick.com/tcpdf": "^6.6"
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
