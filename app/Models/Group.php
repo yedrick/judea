@@ -24,5 +24,13 @@ class Group extends Model
         return $this->belongsTo(View::class,'group_id','id');
     }
 
+    //pts
+    public function group_qr(){
+        return $this->hasMany(GroupQr::class,'group_id','id');
+    }
+
+    public function getTotalPointsAttribute() {
+        return $this->group_qr->sum('pts');
+    }
 
 }

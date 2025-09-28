@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupQr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -113,13 +114,45 @@ class HomeController extends Controller
     public function excel() {
         return view('excel');
     }
-    public function search($code){
-        if($code===null){
-            return redirect($this->prev)->with('message_error','No se encontró el code');
+
+    public function excelCrm() {
+        return view('excel-crm');
+    }
+
+    public static function search($code) {
+        if (!auth()->check()) {
+            return redirect('incorrect')->with('message_error','No autorizado');
         }
+        if($code===null){
+            return redirect('incorrect')->with('message_error','No se encontró el code');
+        }
+        $user=auth()->user();
+        $qr=\App\Models\Qr::where('code',$code)->where('active',true)->first();
+        if (!$qr) {
+            return redirect('incorrect')->with('message_error','No se encontró el code');
+        }
+        if(!$qr->active){
+            return redirect('incorrect')->with('message_error','No autorizado');
+        }
+        $qr->active=false;
+        $qr->save();
+        // $user->pts=$user->pts+$qr->pts;
+        GroupQr::create([
+            'group_id'=>$user->group_id,
+            'qr_id'=>$qr->id,
+            'pts'=>$qr->pts
+        ]);
+        return redirect('correct')->with('message_error','+1');
+    }
+
+    public function search2($code){
         if (!auth()->check()) {
             return redirect($this->prev)->with('message_error','No autorizado');
         }
+        if($code===null){
+            return redirect($this->prev)->with('message_error','No se encontró el code');
+        }
+
         $user=auth()->user();
         $product=\App\Models\Product::where('code',$code)->where('group_id',$user->group_id)->first();
         if($product){

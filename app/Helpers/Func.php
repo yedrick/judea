@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 use Illuminate\Support\Facades\Hash;
-use App\Helpers\Func;
+
 
 
 class Func {
@@ -78,4 +78,10 @@ class Func {
     return ['first_name'=>$first_name, 'last_name'=>$last_name];
   }
 
+  public static function Posicion($nombre) {
+    $vendedores = ['adriana torrez', 'sergio merizalde', 'stefany coronado', 'enrique bedregal', 'sergio rodriguez'];
+    $nombre = strtolower($nombre);
+    $posicion = array_search($nombre, $vendedores); // Buscar la posición del nombre en el array
+    return $posicion + 3;
+  }
 }

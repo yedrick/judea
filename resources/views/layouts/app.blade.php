@@ -18,6 +18,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Agrega los estilos de Toastr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+    <!-- Agrega los scripts de Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @yield('css')
     @yield('header')
 </head>
@@ -35,7 +42,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
+                            </li>
+                            @if (Auth::user()->role_id == 1)
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user') }}">{{ __('Usuarios') }}</a>
+                                </li> --}}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('group') }}">{{ __('Grupos') }}</a>
+                                </li>
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('question') }}">{{ __('Preguntas') }}</a>
+                                </li> --}}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('qr') }}">{{ __('QR') }}</a>
+                                </li>
+                            @endif
 
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -48,11 +74,11 @@
                                 </li>
                             @endif
 
-                            @if (Route::has('register'))
+                            {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -78,8 +104,19 @@
         </nav>
 
         <main class="py-4">
+
             @yield('content')
+
         </main>
     </div>
+    {{-- <script>
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() { alert.remove(); }, 500); // Elimina el elemento después de que desaparece
+            });
+        }, 3000); // 3000 ms = 3 segundos
+    </script> --}}
 </body>
 </html>

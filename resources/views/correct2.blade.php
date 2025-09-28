@@ -61,8 +61,8 @@ p {
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<p>Incorecto</p>
-{{-- <p>-1 Pts</p> --}}
+<p>Correcto</p>
+<p>+1 Pts</p>
 <!-- partial -->
 
 </body>

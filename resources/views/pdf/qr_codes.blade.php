@@ -32,17 +32,9 @@
     </style>
 </head>
 <body>
-{{-- @foreach($qrCodes as $qrCode)
-    <div class="page">
-        @for($i = 0; $i < 4; $i++)
-            <div class="qr-code">
-                {!! $qrCode !!}
-            </div>
-        @endfor
-    </div>
-@endforeach --}}
-@foreach ($products as $item)
-    {!! QrCode::format('png')->size(300)->color(255,0,255)->generate(Request::url()); !!}
+@foreach ($questions as $item)
+<?php $codigoQR = QrCode::format('svg')->backgroundColor(255, 255, 255)->size(150)->generate(route('search.qrs', ['code'=>$item->code])); ?>
+    <img src="data:image/png;base64, {!! base64_encode($codigoQR) !!}" alt="" style="margin-top: 20px; margin-left: 20px;">
 @endforeach
 </body>
 </html>

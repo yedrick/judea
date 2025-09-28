@@ -41,7 +41,7 @@
         <div class="page">
             @for($i = 0; $i < 4; $i++)
                 <div class="qr-code">
-                    <img src="{!! QrCode::format('png')->size(400)->generate(url('product/'.$item->code)); !!}" alt="">
+                    <img src="{!! QrCode::format('png')->size(400)->generate(url('read/'.$item->code)); !!}" alt="">
                     {{-- {!! QrCode::size(400)->generate(url('product/'.$item->code)); !!} --}}
                 </div>
             @endfor

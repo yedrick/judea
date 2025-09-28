@@ -79,6 +79,48 @@ class ProcessController extends Controller
         }
     }
 
+
+    public function uploadExcelCrm(Request $request){
+        $file = $request->file('excel_file');
+
+        // Validar que se haya enviado un archivo
+        if ($file == null) {
+            return redirect()->back()->with('error', 'Por favor, selecciona un archivo Excel válido.');
+        }
+        $user=auth()->user();
+        // Procesar el archivo Excel
+         // Cargar el archivo Excel y obtener los datos por columnas
+        // Obtener datos del archivo Excel
+            
+        $leads=[];
+        $data = Excel::toArray([], $file);
+
+        $conta=0;
+        // Obtener los datos por columnas
+        foreach ($data as $kiy=>$row) {
+            if($row[0]!=null){
+                
+                foreach ($row as $key => $col) {
+                    if($col[0!=null]){
+                        // \Log::info($col[8]);
+                        $array=[
+                            'customer_id'=>$conta,
+                            'user_id'=>Func::Posicion($col[8]),
+                        ];
+                        array_push($leads,$array);
+                        $conta=$conta+1;
+                    }
+                   
+                }
+               
+            }
+            // $conta=$conta+1;
+            // \Log::info($conta);
+            // dd($customers);
+        }
+        \Log::info(json_encode($leads));
+    }
+
     public function vote($campa_id) {
         $user=auth()->user();
         if($user->campamento_id==$campa_id){
